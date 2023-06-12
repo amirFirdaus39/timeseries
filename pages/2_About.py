@@ -4,10 +4,10 @@ import numpy as np
 import pandas as pd
 import altair as alt
 
-dfmw = pd.read_excel('D:/Result.xlsx',sheet_name='MOS_WEEK')
-dftw = pd.read_excel('D:/Result.xlsx',sheet_name='TOTAL_WEEK')
-dfrw = pd.read_excel('D:/Result.xlsx',sheet_name='RATE_WEEK')
-dfmm = pd.read_excel('D:/Result.xlsx',sheet_name='RATE_MONTH')
+dfmw = pd.read_excel('data/Result.xlsx',sheet_name='MOS_WEEK')
+dftw = pd.read_excel('data/Result.xlsx',sheet_name='TOTAL_WEEK')
+dfrw = pd.read_excel('data/Result.xlsx',sheet_name='RATE_WEEK')
+dfmm = pd.read_excel('data/Result.xlsx',sheet_name='RATE_MONTH')
 
 st.title("About - One Flow")
 tab1, tab2, tab3, tab4 = st.tabs(["Time Series", "Results","Dictionary","References"])
