@@ -2,9 +2,7 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
-from scipy.stats import norm
 import warnings
 from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.statespace.sarimax import SARIMAX
