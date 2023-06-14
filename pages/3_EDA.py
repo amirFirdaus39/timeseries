@@ -21,7 +21,7 @@ def gen_heatmap(df):
     sns.heatmap(corrmat, ax=ax, cmap="YlGnBu", linewidths=0.1)
     return f
 
-dfx = pd.read_excel('D:/ap_latest.xlsx')
+dfx = pd.read_excel('data/ap_latest.xlsx')
 dfx['YM']=pd.to_datetime(dfx['START_DATE']).dt.strftime("%Y%m").apply(lambda x: x[2:])
 df = dfx.loc[dfx['REGION_EN_NAME']=="Asia Pacific Region"]
 df = df.drop(columns={'REGION_EN_NAME','START_DATE'})
