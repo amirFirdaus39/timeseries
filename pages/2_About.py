@@ -110,7 +110,7 @@ with tab2:
 
 with tab3:
     st.header("📝 One Flow Dictionary")
-    dict_df =  pd.read_excel('D:/One Flow Dashboard Dictionary一条流看板指标字典.xlsx',sheet_name=0)
+    dict_df =  pd.read_excel('data/One Flow Dashboard Dictionary一条流看板指标字典.xlsx',sheet_name=0)
     dict_df['No']= dict_df['No'].astype(str)
     dict_df = dict_df.set_index(['No'])
     dict_df = dict_df.loc[~((dict_df['KCP']=='Valid DU') |(dict_df['KCP']=='Exclude List')) ]
