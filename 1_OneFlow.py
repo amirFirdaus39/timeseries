@@ -33,7 +33,7 @@ st.set_page_config(
 w = 500
 h = 350
 
-dfx = pd.read_excel('D:/ap_latest.xlsx')
+dfx = pd.read_excel('data/ap_latest.xlsx')
 dfx['YM']=pd.to_datetime(dfx['START_DATE']).dt.strftime("%Y%m").apply(lambda x: x[2:])
 
 def dataRep(rep):
