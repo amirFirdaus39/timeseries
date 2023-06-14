@@ -2,7 +2,9 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
+from scipy.stats import norm
 import warnings
 from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.statespace.sarimax import SARIMAX
@@ -23,27 +25,31 @@ import altair as alt
 warnings.filterwarnings("ignore")
 #000A30
 #102759
+#streamlit run "d:/streamlit/1_OneFlow.py"
+st.set_page_config(
+    page_title="OneFlow Time Series",
+    page_icon=":chart_with_upwards_trend:",
+    layout="wide")
 w = 500
 h = 350
 
-#dfx = pd.read_excel('D:/ap_latest.xlsx')
-dfx = pd.read_excel('data/ap_latest.xlsx')
+dfx = pd.read_excel('D:/ap_latest.xlsx')
 dfx['YM']=pd.to_datetime(dfx['START_DATE']).dt.strftime("%Y%m").apply(lambda x: x[2:])
 
 def dataRep(rep):
     df = dfx.loc[dfx['REGION_EN_NAME']==rep]
     df = df.drop(columns={'REGION_EN_NAME','START_DATE'})
-    df.sort_values(by=['YM'], inplace=True)
-    df = df.set_index(['YM'])   
+    df = df.set_index(['YM'])
+    df = df.sort_index()
     df = df[:-1]
-    df = df.rename(columns={'MOS':'MOS_COMPLETED'})
+    df = df.rename(columns={"MOS":"MOS_COMPLETED"})
     df1 = df[['TOTAL_MOS', 'MOS_COMPLETED','SLA','SLA1','SLA2'
             #'SLA3'
             ]]
     df2 = df[['RATE','TIMELY_ADMISSION_RATE', 
             'JOB_CONTINUITY',
         'QC_TIMELY_ADMISSION_RATE', 'QC_TIMELY_COLLECTION_RATE',
-        'QC_TIMELY_APPROVAL_RATE', 'QCL1_FTPR', 
+        'QC_TIMELY_APPROVAL_RATE', 'QCL1_FTPR' 
         #'L2_TIMELY_REVIEW_RATE','L2_REJECTION_RATE'
         ]]
     return df, df1, df2
@@ -87,7 +93,7 @@ def fc_hwes(train, step, trend='add',season='add',period=3,title='HWES'):
     #train = train.append(fc_df)[:(len(train) + step)]
     col = {'Actual':train,'Forecast':fc_df}
     temp = pd.DataFrame(col)
-    col1.text(f'Actual vs Forecast - {title}')
+    col1.subheader(f'Actual vs Forecast - {title}')
     col1.bar_chart(temp,width=w,height=h,use_container_width=True)
     col1.write(f"Forecast {title} Margin of error ± {mae}")
     #col1.table(df['Actual'])
@@ -116,28 +122,28 @@ def fc_hwes2(train, step, trend='add',season='add',period=3,title='TimeSeries'):
     col = {'Actual':train,'Forecast':fc_df}
     temp = pd.DataFrame(col)
     if title == 'QCL1_FTPR':
-        col1.text(f'Actual vs Forecast - {title}')
+        col1.subheader(f'Actual vs Forecast - {title}')
         col1.line_chart(temp,width=w,height=h,use_container_width=True)
         col1.write(f"Forecast {title} Margin of error ± {mae}")
         col1.table(temp['Forecast'][-step:])
         col1.divider()  
     else:
-        col2.text(f'Actual vs Forecast - {title}')
+        col2.subheader(f'Actual vs Forecast - {title}')
         col2.line_chart(temp,width=w,height=h,use_container_width=True)
         col2.write(f"Forecast {title} Margin of error ± {mae}")
         col2.table(temp['Forecast'][-step:])
         col2.divider()  
     return fc_df
 
-st.title("One Flow")
-st.write("*by Amir Firdaus*")
+st.title(":chart_with_upwards_trend: OneFlow Time Series")
+st.write("*Data Science Project by Amir Firdaus*")
 url = "https://datafab-pro-id.gtsdata.huawei.com/DataFabKernelCn/#/visualBoardPreview?id=69Z07S0qg315oDPqTZ4gAo&questionPurpose=&isDesignPreview=true&pageId=pageld09pwn2"
 st.write("Link to [One Flow Dashboard](%s)" % url)
 tab1, tab2 = st.tabs(["Region", "Rep Office"])
 
 
 with tab1:
-    st.subheader("📝 One Flow Time Series [Asia Pacific]")
+    st.subheader(":earth_asia: One Flow Time Series [Asia Pacific]")
     colA, colB,colC = st.columns(3)
     n = colA.slider('Choose number of months to forecast:', min_value=1,max_value=5,value=3,key=1)
     st.divider()
@@ -150,7 +156,7 @@ with tab1:
         fc_hwes2(df2[col],n,title=col)
 
 with tab2:
-    st.subheader("📝 One Flow Time Series [Rep Office]")
+    st.subheader(":earth_asia: One Flow Time Series [Rep Office]")
     colA, colB,colC = st.columns(3)
     n2 = colA.slider('Choose number of months to forecast:', min_value=1,max_value=5,value=3,key=2)
     st.divider()
